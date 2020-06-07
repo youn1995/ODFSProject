@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="300.0" prefWidth="500.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
+   <children>
+      <Label layoutX="27.0" layoutY="65.0" text="아이디" />
+      <Label layoutX="241.0" layoutY="65.0" text="비밀번호" />
+      <Label layoutX="51.0" layoutY="165.0" text="이름" />
+      <Label layoutX="248.0" layoutY="165.0" text="이메일" />
+      <Label layoutX="198.0" layoutY="276.0" text="회원가입시 개인정보 사용에 동의합니다." />
+      <TextField layoutX="27.0" layoutY="90.0" promptText="5자리 이상" />
+      <TextField layoutX="27.0" layoutY="184.0" />
+      <TextField layoutX="241.0" layoutY="184.0" prefHeight="27.0" prefWidth="233.0" />
+      <Button layoutX="134.0" layoutY="121.0" mnemonicParsing="false" text="중복검사">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Button>
+      <PasswordField layoutX="241.0" layoutY="88.0" prefHeight="27.0" prefWidth="233.0" promptText="8자리 이상" />
+      <PasswordField layoutX="241.0" layoutY="121.0" prefHeight="27.0" prefWidth="233.0" promptText="비밀번호를 다시 입력하세요." />
+      <Button layoutX="407.0" layoutY="214.0" mnemonicParsing="false" text="이메일 인증">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Button>
+      <Button layoutX="436.0" layoutY="265.0" mnemonicParsing="false" text="Button" />
+      <Hyperlink layoutX="424.0" layoutY="15.0" text="뒤로가기" id="hyLinkGoBack"/>
+      <Label layoutX="170.0" layoutY="16.0" text="오늘의 명언 회원가입">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

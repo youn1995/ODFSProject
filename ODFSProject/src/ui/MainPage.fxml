@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="300.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label id="labContent" alignment="CENTER" contentDisplay="CENTER" layoutX="53.0" layoutY="113.0" prefHeight="44.0" prefWidth="405.0" text="오늘은 그만." textAlignment="CENTER">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Label id="labWho" alignment="CENTER" contentDisplay="CENTER" layoutX="56.0" layoutY="168.0" prefHeight="17.0" prefWidth="399.0" text="누구누구눅" textAlignment="CENTER" />
+      <Button id="btnLikeList" layoutX="18.0" layoutY="259.0" mnemonicParsing="false" text="Like List" textAlignment="CENTER" />
+      <Hyperlink id="hyLinkLogout" layoutX="431.0" layoutY="14.0" text="로그아웃" />
+      <Hyperlink id="hyLinkBefore" layoutX="7.0" layoutY="124.0" text="이전" />
+      <Hyperlink id="hyLinkNext" layoutX="461.0" layoutY="124.0" text="다음" />
+      <ToggleButton id="toBtnLikeIt" layoutX="365.0" layoutY="259.0" mnemonicParsing="false" text="좋아요" textAlignment="CENTER" userData="좋아요" 
+ />
+      <ToggleButton id="toBtnNoLike" layoutX="422.0" layoutY="259.0" mnemonicParsing="false" text="싫어요" textAlignment="CENTER"	userData="싫어요"	
+ />
+      <Separator layoutX="47.0" layoutY="115.0" orientation="VERTICAL" prefHeight="50.0" prefWidth="6.0" />
+      <Separator layoutX="458.0" layoutY="110.0" orientation="VERTICAL" prefHeight="50.0" prefWidth="0.0" />
+      <Separator layoutX="425.0" layoutY="14.0" orientation="VERTICAL" prefHeight="25.0" prefWidth="0.0" />
+      <Hyperlink id="hyLinkMyInfo" layoutX="359.0" layoutY="14.0" text="나의 정보" />
+   </children>
+</AnchorPane>
