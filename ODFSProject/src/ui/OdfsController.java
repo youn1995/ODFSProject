@@ -111,6 +111,11 @@ public class OdfsController implements Initializable {
 				btnLikeList.setOnAction(event -> {
 					listOfUserLike(event);
 				});
+				Hyperlink hyLinkPre = (Hyperlink) parent.lookup("#hyLinkBefore");
+				Hyperlink hyLinkNext = (Hyperlink) parent.lookup("hyLinkNext");
+				
+				
+				
 			} catch (IOException e2) {
 				e2.printStackTrace();
 			}
