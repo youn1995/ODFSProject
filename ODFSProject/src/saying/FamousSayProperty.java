@@ -7,7 +7,8 @@ public class FamousSayProperty {
 	public SimpleStringProperty contentSim;
 	
 	public FamousSayProperty(String nameSim, String contentSim) {
-		this.nameSim = new SimpleStringProperty();
+		this.nameSim = new SimpleStringProperty(nameSim);
+		this.contentSim = new SimpleStringProperty(contentSim);
 	}
 
 	public String getNameSim() {

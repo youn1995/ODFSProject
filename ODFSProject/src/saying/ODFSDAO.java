@@ -287,8 +287,8 @@ public class ODFSDAO {
 		return list;
 	}
 	
-	public List<FamousSayProperty> getFamousSayPropertyList(int userId) {
-		List<FamousSayProperty> list = new ArrayList<FamousSayProperty>();
+	public ObservableList<FamousSayProperty> getFamousSayPropertyList(int userId) {
+		ObservableList<FamousSayProperty> list = FXCollections.observableArrayList();
 		String sql = String.format("select f.name as name, f.content as content from onfs_famous_sayings f join onfs_like l on(l.list_id = f.list_id) where l.user_id = %s", userId);
 		conn = getConnect();
 		try {

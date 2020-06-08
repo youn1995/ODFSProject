@@ -113,9 +113,12 @@ public class OdfsController implements Initializable {
 				});
 				Hyperlink hyLinkPre = (Hyperlink) parent.lookup("#hyLinkBefore");
 				Hyperlink hyLinkNext = (Hyperlink) parent.lookup("hyLinkNext");
-				
-				
-				
+				Hyperlink hyLinkLogOut = (Hyperlink) parent.lookup("hyLinkLogout");
+
+				hyLinkLogOut.setOnMouseClicked(event -> { 					
+	
+				});
+
 			} catch (IOException e2) {
 				e2.printStackTrace();
 			}
@@ -235,7 +238,21 @@ public class OdfsController implements Initializable {
 			addStage.setScene(scene);
 			addStage.setResizable(false);
 			addStage.show();
-			
+
+			TableView<FamousSayProperty> tableView = (TableView<FamousSayProperty>) parent.lookup("#tableViewLike");
+			ObservableList<FamousSayProperty> famousList = (ObservableList<FamousSayProperty>) app
+					.userLikeList(member.getUserId());
+			TableColumn<FamousSayProperty, String> tcName = new TableColumn<FamousSayProperty, String>();
+			tcName.setCellValueFactory(new PropertyValueFactory<FamousSayProperty, String>("nameSim"));
+			TableColumn<FamousSayProperty, String> tcContent = new TableColumn<FamousSayProperty, String>();
+			tcContent.setCellValueFactory(new PropertyValueFactory<FamousSayProperty, String>("contentSim"));
+
+			tcName.setText("이름");
+			tcContent.setText("Content");
+			tableView.getColumns().add(tcName);
+			tableView.getColumns().add(tcContent);
+			tableView.setItems(famousList);
+
 			Hyperlink hyLinkGoBack = (Hyperlink) parent.lookup("#hyLinkGoBack");
 			hyLinkGoBack.setOnMouseClicked(event -> {
 				addStage.close();

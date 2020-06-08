@@ -60,12 +60,14 @@ public class AppServiceImpl implements AppService {
 	}
 
 	@Override
-	public List<FamousSayProperty> userLikeList(int userId) {
+	public ObservableList<FamousSayProperty> userLikeList(int userId) {
 
 		ODFSDAO dao = new ODFSDAO();
 		
-		List<FamousSayProperty> like = dao.getFamousSayPropertyList(userId);
-		return like;
+		ObservableList<FamousSayProperty> list = dao.getFamousSayPropertyList(userId);
+		return list;
+		
+		 
 	}
 
 }

@@ -12,7 +12,7 @@ public interface AppService {
 	
 	public void next();
 	
-	public List<FamousSayProperty> userLikeList(int userId);
+	public ObservableList<FamousSayProperty> userLikeList(int userId);
 	
 	public FamousSay getDailyFS();
 	
