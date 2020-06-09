@@ -72,8 +72,6 @@ public class OdfsController implements Initializable {
 	public void setPrimaryStage(Stage stage) {
 		this.primaryStage = stage;
 	}
-	
-	private FamousSayProperty fSPForDel;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -107,7 +105,6 @@ public class OdfsController implements Initializable {
 				primaryStage.setScene(scene);
 				primaryStage.show();
 				adminManager(parent);
-				
 
 			} catch (IOException e1) {
 				e1.printStackTrace();
@@ -281,9 +278,9 @@ public class OdfsController implements Initializable {
 	}
 
 	public void adminManager(Parent parent) {
-		Button btnDeleteFS = (Button) parent.lookup("btnDeleteFS");
+		Button btnDeleteFS = (Button) parent.lookup("#btnDeleteFS");
 		Button btnUserManage = (Button) parent.lookup("#btnUserManage");
-		Button btnAddFS = (Button) parent.lookup("#btnDelete");
+		Button btnAddFS = (Button) parent.lookup("#btnAddFS");
 		Button btnExit = (Button) parent.lookup("#btnExit");
 		TextField txtTodayFSContent = (TextField) parent.lookup("#txtTodayFSContent");
 		TextField txtTodayFSName = (TextField) parent.lookup("#txtTodayFSName");
@@ -323,8 +320,7 @@ public class OdfsController implements Initializable {
 
 		txtTodayFSName.setText(famousSay.getName());
 		txtTodayFSContent.setText(famousSay.getContent());
-		
-		
+
 		tableViewListFS.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<FamousSayProperty>() {
 
 			@Override
@@ -337,37 +333,37 @@ public class OdfsController implements Initializable {
 			}
 		});
 
+		btnDeleteFS.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				if (tableViewListFS.getSelectionModel().getSelectedItem() != null) {
+					System.out.println(tableViewListFS.getSelectionModel().getSelectedItem().getListIdSim());
+				}
+
+			}
+		});
+
+		btnAddFS.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				txtName.getText();
+				txtContent.getText();
+				
+			}
+		});
 		
-//		btnDeleteFS.setOnAction(new EventHandler<ActionEvent>() {
-//
-//			@Override
-//			public void handle(ActionEvent event1) {
-//				if(fSPForDel != null) {
-//				System.out.println(fSPForDel.getListIdSim());
-//				} 
-//				
-//			}
-//		});
-//		
-//		btnAddFS.setOnAction(new EventHandler<ActionEvent>() {
-//			
-//			@Override
-//			public void handle(ActionEvent event) {
-//				txtName.getText();
-//				txtContent.getText();
-//			}
-//		});
-//		
+		btnUserManage.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				
+			}
+		});
 
 		btnExit.setOnAction(e -> primaryStage.close());
 
 	}
-//	
-//	public void deleteFSForManager(FamousSayProperty fs) {
-//		if(fs == null) {
-//			System.out.println("ssss");
-//		}
-//
-//	}
 
 }
