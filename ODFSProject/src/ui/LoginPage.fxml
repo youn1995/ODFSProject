@@ -14,19 +14,19 @@
       <Button fx:id="btnSignUp" layoutX="256.0" layoutY="259.0" mnemonicParsing="false" text="회원가입" />
       <TextField fx:id="txtUserId" layoutX="201.0" layoutY="162.0" />
       <PasswordField fx:id="txtPwd" layoutX="201.0" layoutY="198.0" />
-      <Label layoutX="151.0" layoutY="30.0" prefHeight="26.0" prefWidth="210.0" text="One Day Famous Saying">
+      <Label alignment="CENTER" layoutX="151.0" layoutY="30.0" prefHeight="26.0" prefWidth="210.0" text="오늘의 명언">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
       <Label layoutX="137.0" layoutY="199.0" text="비밀번호" />
-      <Label fx:id="labTodayFS" alignment="CENTER" contentDisplay="CENTER" layoutX="-2.0" layoutY="84.0" prefHeight="26.0" prefWidth="500.0" text="오늘은 이만.">
+      <Label fx:id="labTodayFS" alignment="CENTER" contentDisplay="CENTER" layoutX="-2.0" layoutY="84.0" prefHeight="26.0" prefWidth="500.0">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
       <Separator layoutX="138.0" layoutY="150.0" prefHeight="3.0" prefWidth="235.0" />
       <Separator layoutX="129.0" layoutY="235.0" prefHeight="3.0" prefWidth="241.0" />
-      <Label fx:id="labTodayFSWho" alignment="CENTER" contentDisplay="CENTER" layoutY="118.0" prefHeight="17.0" prefWidth="504.0" text="누구누구눅" />
+      <Label fx:id="labTodayFSWho" alignment="CENTER" contentDisplay="CENTER" layoutY="118.0" prefHeight="17.0" prefWidth="504.0" />
    </children>
 </AnchorPane>

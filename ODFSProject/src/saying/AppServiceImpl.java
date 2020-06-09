@@ -32,12 +32,7 @@ public class AppServiceImpl implements AppService {
 	@Override
 	public FamousSay getDailyFS() {
 		ODFSDAO dao = new ODFSDAO();
-		String sysDate = dao.getDBtime();
-		int count = dao.getCountFS();
-		int Date = Integer.parseInt(sysDate.trim().substring(0,10).replace("-", ""));
-		Random random = new Random(Date);
-		int rowFS = random.nextInt(count)+1;
-		FamousSay fs = dao.findFS(rowFS);
+		FamousSay fs = dao.findFS();
 		
 		return fs;
 	}
@@ -66,8 +61,21 @@ public class AppServiceImpl implements AppService {
 		
 		ObservableList<FamousSayProperty> list = dao.getFamousSayPropertyList(userId);
 		return list;
-		
 		 
+	}
+
+	@Override
+	public ObservableList<FamousSayProperty> managerFSList() {
+		ODFSDAO dao = new ODFSDAO();
+		ObservableList<FamousSayProperty> list = dao.getFamousSayingList();
+		
+		return list;
+	}
+
+	@Override
+	public void deleteFamousSayingForManager(int listId) {
+		ODFSDAO dao = new ODFSDAO();
+		dao.deleteFamousSaying(listId);
 	}
 
 }

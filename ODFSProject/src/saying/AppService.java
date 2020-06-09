@@ -19,4 +19,8 @@ public interface AppService {
 	public List<Integer> getUserLikeList(int selectNum, int userId);
 	
 	public void insertDeleteUserLikeList(int likeUnlikeSel, int listId, int userId);
+	
+	public ObservableList<FamousSayProperty> managerFSList();
+	
+	public void deleteFamousSayingForManager(int listId);
 }

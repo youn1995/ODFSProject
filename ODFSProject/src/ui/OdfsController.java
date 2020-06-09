@@ -6,10 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -30,6 +32,7 @@ import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Popup;
@@ -69,6 +72,8 @@ public class OdfsController implements Initializable {
 	public void setPrimaryStage(Stage stage) {
 		this.primaryStage = stage;
 	}
+	
+	private FamousSayProperty fSPForDel;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -94,6 +99,20 @@ public class OdfsController implements Initializable {
 		member = app.login(txtUserId.getText(), txtPwd.getText());
 		if (member.getName() == null || member == null) {
 			messagePopup("아이디 또는 비밀번호를 틀렸습니다");
+		} else if (member.getUserId() == 1000) {
+			Parent parent;
+			try {
+				parent = FXMLLoader.load(getClass().getResource("AdminPage.fxml"));
+				Scene scene = new Scene(parent);
+				primaryStage.setScene(scene);
+				primaryStage.show();
+				adminManager(parent);
+				
+
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+
 		} else {
 			try {
 				Parent parent = FXMLLoader.load(getClass().getResource("MainPage.fxml"));
@@ -115,9 +134,9 @@ public class OdfsController implements Initializable {
 				Hyperlink hyLinkNext = (Hyperlink) parent.lookup("hyLinkNext");
 				Hyperlink hyLinkLogOut = (Hyperlink) parent.lookup("hyLinkLogout");
 
-				hyLinkLogOut.setOnMouseClicked(event -> { 					
-	
-				});
+//				hyLinkLogOut.setOnMouseClicked(event -> { 					
+//	
+//				});
 
 			} catch (IOException e2) {
 				e2.printStackTrace();
@@ -246,7 +265,6 @@ public class OdfsController implements Initializable {
 			tcName.setCellValueFactory(new PropertyValueFactory<FamousSayProperty, String>("nameSim"));
 			TableColumn<FamousSayProperty, String> tcContent = new TableColumn<FamousSayProperty, String>();
 			tcContent.setCellValueFactory(new PropertyValueFactory<FamousSayProperty, String>("contentSim"));
-
 			tcName.setText("이름");
 			tcContent.setText("Content");
 			tableView.getColumns().add(tcName);
@@ -261,5 +279,95 @@ public class OdfsController implements Initializable {
 			e1.printStackTrace();
 		}
 	}
+
+	public void adminManager(Parent parent) {
+		Button btnDeleteFS = (Button) parent.lookup("btnDeleteFS");
+		Button btnUserManage = (Button) parent.lookup("#btnUserManage");
+		Button btnAddFS = (Button) parent.lookup("#btnDelete");
+		Button btnExit = (Button) parent.lookup("#btnExit");
+		TextField txtTodayFSContent = (TextField) parent.lookup("#txtTodayFSContent");
+		TextField txtTodayFSName = (TextField) parent.lookup("#txtTodayFSName");
+		TextField txtNameForDel = (TextField) parent.lookup("#txtNameForDel");
+		TextField txtContentForDel = (TextField) parent.lookup("#txtContentForDel");
+		TextField txtName = (TextField) parent.lookup("#txtName");
+		TextField txtContent = (TextField) parent.lookup("#txtContent");
+
+		TableView<FamousSayProperty> tableViewListFS = (TableView<FamousSayProperty>) parent.lookup("#tableViewListFS");
+		ObservableList<FamousSayProperty> famousList = (ObservableList<FamousSayProperty>) app.managerFSList();
+		TableColumn<FamousSayProperty, Integer> tcListId = new TableColumn<FamousSayProperty, Integer>();
+		tcListId.setCellValueFactory(new PropertyValueFactory<FamousSayProperty, Integer>("listIdSim"));
+		TableColumn<FamousSayProperty, String> tcName = new TableColumn<FamousSayProperty, String>();
+		tcName.setCellValueFactory(new PropertyValueFactory<FamousSayProperty, String>("nameSim"));
+		TableColumn<FamousSayProperty, String> tcContent = new TableColumn<FamousSayProperty, String>();
+		tcContent.setCellValueFactory(new PropertyValueFactory<FamousSayProperty, String>("contentSim"));
+		TableColumn<FamousSayProperty, String> tcUseDate = new TableColumn<FamousSayProperty, String>();
+		tcUseDate.setCellValueFactory(new PropertyValueFactory<FamousSayProperty, String>("useDateSim"));
+		TableColumn<FamousSayProperty, Integer> tcLiked = new TableColumn<FamousSayProperty, Integer>();
+		tcLiked.setCellValueFactory(new PropertyValueFactory<FamousSayProperty, Integer>("likedSim"));
+		TableColumn<FamousSayProperty, Integer> tcNoLiked = new TableColumn<FamousSayProperty, Integer>();
+		tcNoLiked.setCellValueFactory(new PropertyValueFactory<FamousSayProperty, Integer>("noLikedSim"));
+
+		tcListId.setText("#");
+		tcName.setText("이름");
+		tcContent.setText("명언");
+		tcUseDate.setText("사용날짜");
+		tcLiked.setText("좋아요");
+		tcNoLiked.setText("싫어요");
+		tableViewListFS.getColumns().add(tcListId);
+		tableViewListFS.getColumns().add(tcName);
+		tableViewListFS.getColumns().add(tcContent);
+		tableViewListFS.getColumns().add(tcUseDate);
+		tableViewListFS.getColumns().add(tcLiked);
+		tableViewListFS.getColumns().add(tcNoLiked);
+		tableViewListFS.setItems(famousList);
+
+		txtTodayFSName.setText(famousSay.getName());
+		txtTodayFSContent.setText(famousSay.getContent());
+		
+		
+		tableViewListFS.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<FamousSayProperty>() {
+
+			@Override
+			public void changed(ObservableValue<? extends FamousSayProperty> observable, FamousSayProperty oldValue,
+					FamousSayProperty newValue) {
+				if (newValue != null) {
+					txtNameForDel.setText(newValue.getNameSim());
+					txtContentForDel.setText(newValue.getContentSim());
+				}
+			}
+		});
+
+		
+//		btnDeleteFS.setOnAction(new EventHandler<ActionEvent>() {
+//
+//			@Override
+//			public void handle(ActionEvent event1) {
+//				if(fSPForDel != null) {
+//				System.out.println(fSPForDel.getListIdSim());
+//				} 
+//				
+//			}
+//		});
+//		
+//		btnAddFS.setOnAction(new EventHandler<ActionEvent>() {
+//			
+//			@Override
+//			public void handle(ActionEvent event) {
+//				txtName.getText();
+//				txtContent.getText();
+//			}
+//		});
+//		
+
+		btnExit.setOnAction(e -> primaryStage.close());
+
+	}
+//	
+//	public void deleteFSForManager(FamousSayProperty fs) {
+//		if(fs == null) {
+//			System.out.println("ssss");
+//		}
+//
+//	}
 
 }

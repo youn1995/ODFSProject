@@ -5,22 +5,26 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane prefHeight="500.0" prefWidth="500.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
+<AnchorPane prefHeight="500.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <TableView layoutX="11.0" layoutY="112.0" prefHeight="200.0" prefWidth="478.0">
-        <columns>
-          <TableColumn prefWidth="75.0" text="C1" />
-          <TableColumn prefWidth="75.0" text="C2" />
-        </columns>
+      <TableView id="tableViewListFS" layoutX="11.0" layoutY="97.0" prefHeight="200.0" prefWidth="478.0">
+      
       </TableView>
-      <Label layoutX="27.0" layoutY="88.0" text="명언목록" />
-      <Button layoutX="442.0" layoutY="320.0" mnemonicParsing="false" text="삭제" />
-      <Label layoutX="19.0" layoutY="14.0" text="오늘의 명언" />
-      <TextField layoutX="19.0" layoutY="39.0" prefHeight="27.0" prefWidth="208.0" />
-      <TextField layoutX="15.0" layoutY="320.0" prefHeight="27.0" prefWidth="420.0" />
-      <Button layoutX="93.0" layoutY="459.0" mnemonicParsing="false" text="유저관리" />
-      <Button layoutX="14.0" layoutY="459.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="79.0" text="명언 추가" />
-      <Button layoutX="442.0" layoutY="452.0" mnemonicParsing="false" text="종료" />
+      <Label layoutX="224.0" layoutY="80.0" text="명언목록" />
+      <Button id="btnDeleteFS" layoutX="442.0" layoutY="307.0" mnemonicParsing="false" text="삭제" />
+      <Label layoutX="215.0" layoutY="21.0" text="오늘의 명언" />
+      <TextField id="txtTodayFSContent" layoutX="185.0" layoutY="39.0" prefHeight="27.0" prefWidth="304.0" />
+      <TextField id="txtContentForDel" layoutX="174.0" layoutY="307.0" prefHeight="27.0" prefWidth="255.0" />
+      <Button id="btnUserManage" layoutX="82.0" layoutY="459.0" mnemonicParsing="false" text="유저관리" />
+      <Button id="btnAddFS" layoutX="411.0" layoutY="438.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="79.0" text="명언 추가" />
+      <Button id="btnExit" layoutX="12.0" layoutY="459.0" mnemonicParsing="false" text="관리종료" />
+      <TextField id="txtTodayFSName" layoutX="11.0" layoutY="39.0" prefHeight="27.0" prefWidth="174.0" />
+      <TextField id="txtNameForDel" layoutX="13.0" layoutY="307.0" />
+      <TextField id="txtName" layoutX="72.0" layoutY="376.0" prefHeight="27.0" prefWidth="418.0" />
+      <Separator layoutX="12.0" layoutY="344.0" prefHeight="9.0" prefWidth="478.0" />
+      <Label layoutX="223.0" layoutY="356.0" text="명언추가" />
+      <TextField id="txtContent" layoutX="72.0" layoutY="404.0" prefHeight="27.0" prefWidth="418.0" />
+      <Label layoutX="21.0" layoutY="382.0" text="이름" />
+      <Label layoutX="21.0" layoutY="411.0" text="내용" />
    </children>
 </AnchorPane>

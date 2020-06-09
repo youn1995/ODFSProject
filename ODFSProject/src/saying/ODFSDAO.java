@@ -19,7 +19,7 @@ public class ODFSDAO {
 
 	public Connection getConnect() { // 세션접속
 
-		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		String url = "jdbc:oracle:thin:@localhost:1521:orcl";
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			conn = DriverManager.getConnection(url, "hr", "hr");
@@ -52,22 +52,20 @@ public class ODFSDAO {
 		return list;
 	}
 
-	public List<FamousSay> getFamousSayingList() { // 관리자용 명언리스트
-		List<FamousSay> list = new ArrayList<FamousSay>();
-		String sql = "select f.list_id, f.name, f.content, e.liked ,n.noliked "
-				+ "from onfs_famous_sayings f join onfs_likecount e" + "on(f.list_id = e.list_id)"
-				+ "join onfs_nolikecount n" + "on(f.list_id = n.list_id)";
+	public ObservableList<FamousSayProperty> getFamousSayingList() { // 관리자용 명언리스트
+		ObservableList<FamousSayProperty> list = FXCollections.observableArrayList();
+		String sql = "select f.list_id , f.name, f.content , f.usedate, e.liked , n.noliked\n" + 
+				"from onfs_famous_sayings f join onfs_likecount e on(f.list_id = e.list_id)\n" + 
+				"join onfs_nolikecount n on(f.list_id = n.list_id) order by 1";
 		conn = getConnect();
 		try {
 			pstmt = conn.prepareStatement(sql);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
-				FamousSay famousSay = new FamousSay();
-				famousSay.setName(rs.getString("name"));
-				famousSay.setContent(rs.getString("content"));
-				famousSay.setLiked(rs.getInt("liked"));
-				famousSay.setNoliked(rs.getInt("noliked"));
-				list.add(famousSay);
+				String usedateSubString = rs.getString("usedate").substring(0, 10);
+				FamousSayProperty famousSayProperty = new FamousSayProperty(rs.getInt("list_id"), rs.getString("name"),
+						rs.getString("content"), usedateSubString, rs.getInt("liked"), rs.getInt("noliked"));
+				list.add(famousSayProperty);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -185,27 +183,26 @@ public class ODFSDAO {
 		return count;
 	}
 
-	public String getDBtime() {
-		String sql = "select sysdate from dual";
-		String sysDate = null;
-		conn = getConnect();
-		try {
-			pstmt = conn.prepareStatement(sql);
-			ResultSet rs = pstmt.executeQuery();
-			while (rs.next()) {
-				sysDate = rs.getString("sysdate");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} catch (IndexOutOfBoundsException e1) {
+//	public String getDBtime() {
+//		String sql = "select sysdate from dual";
+//		String sysDate = null;
+//		conn = getConnect();
+//		try {
+//			pstmt = conn.prepareStatement(sql);
+//			ResultSet rs = pstmt.executeQuery();
+//			while (rs.next()) {
+//				sysDate = rs.getString("sysdate");
+//			}
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		} catch (IndexOutOfBoundsException e1) {
+//
+//		}
+//		return sysDate;
+//	}
 
-		}
-		return sysDate;
-	}
-
-	public FamousSay findFS(int rowNum) {
-		String sql = String.format("select list_id, name, content\n"
-				+ "from (select rownum as rn, e.* from onfs_famous_sayings e)\n" + "where rn = %s", rowNum);
+	public FamousSay findFS() {
+		String sql = "select * from onfs_famous_sayings where usedate = to_char(sysdate, 'yyyy/mm/dd')";
 		FamousSay famousSay = new FamousSay();
 		conn = getConnect();
 		try {
@@ -251,8 +248,7 @@ public class ODFSDAO {
 		}
 		return isInLike;
 	}
-	
-	
+
 	public List<Integer> getUserLikeItList(int userId) {
 		List<Integer> list = new ArrayList<>();
 		String sql = String.format("select list_id from onfs_like where user_id = %d", userId);
@@ -266,10 +262,10 @@ public class ODFSDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		return list;
 	}
-	
+
 	public List<Integer> getUserNoLikeItList(int userId) {
 		List<Integer> list = new ArrayList<>();
 		String sql = String.format("select list_id from onfs_nolike where user_id = %d", userId);
@@ -283,19 +279,22 @@ public class ODFSDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		return list;
 	}
-	
+
 	public ObservableList<FamousSayProperty> getFamousSayPropertyList(int userId) {
 		ObservableList<FamousSayProperty> list = FXCollections.observableArrayList();
-		String sql = String.format("select f.name as name, f.content as content from onfs_famous_sayings f join onfs_like l on(l.list_id = f.list_id) where l.user_id = %s", userId);
+		String sql = String.format(
+				"select f.name as name, f.content as content from onfs_famous_sayings f join onfs_like l on(l.list_id = f.list_id) where l.user_id = %s",
+				userId);
 		conn = getConnect();
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
-				FamousSayProperty famousSayProperty = new FamousSayProperty(rs.getString("name"), rs.getString("content"));
+				FamousSayProperty famousSayProperty = new FamousSayProperty(rs.getString("name"),
+						rs.getString("content"));
 //				famousSay.setNameSim(rs.getString("name"));
 //				famousSay.setContentSim(rs.getString("content"));
 				list.add(famousSayProperty);
