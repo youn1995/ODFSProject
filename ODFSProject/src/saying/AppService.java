@@ -10,11 +10,10 @@ public interface AppService {
 	
 	public boolean findLikeIt(int likeUnlikeSel, int listId, int userId);
 	
-	public void next();
-	
 	public ObservableList<FamousSayProperty> userLikeList(int userId);
 	
 	public FamousSay getDailyFS();
+	public FamousSay getPreviousFamousSay(int preNum);
 	
 	public List<Integer> getUserLikeList(int selectNum, int userId);
 	
@@ -23,4 +22,7 @@ public interface AppService {
 	public ObservableList<FamousSayProperty> managerFSList();
 	
 	public void deleteFamousSayingForManager(int listId);
+	
+	public void insertFSForManager(String name, String fs);
+	
 }

@@ -23,11 +23,6 @@ public class AppServiceImpl implements AppService {
 
 	}
 
-	@Override
-	public void next() {
-		// TODO Auto-generated method stub
-
-	}
 
 	@Override
 	public FamousSay getDailyFS() {
@@ -77,5 +72,19 @@ public class AppServiceImpl implements AppService {
 		ODFSDAO dao = new ODFSDAO();
 		dao.deleteFamousSaying(listId);
 	}
+
+	@Override
+	public void insertFSForManager(String name, String fs) {
+		ODFSDAO dao = new ODFSDAO();
+		dao.insertFamousSayForManager(name, fs);
+	}
+
+	@Override
+	public FamousSay getPreviousFamousSay(int preNum) {
+		ODFSDAO dao = new ODFSDAO();
+		return dao.getPreviousFS(preNum);
+	}
+	
+	
 
 }

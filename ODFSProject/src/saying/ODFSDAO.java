@@ -54,9 +54,12 @@ public class ODFSDAO {
 
 	public ObservableList<FamousSayProperty> getFamousSayingList() { // 관리자용 명언리스트
 		ObservableList<FamousSayProperty> list = FXCollections.observableArrayList();
-		String sql = "select f.list_id , f.name, f.content , f.usedate, e.liked , n.noliked\n" + 
-				"from onfs_famous_sayings f join onfs_likecount e on(f.list_id = e.list_id)\n" + 
-				"join onfs_nolikecount n on(f.list_id = n.list_id) order by 1";
+		String sql = "select f.list_id, f.name, f.content, f.usedate, nvl(s.liked, 0) as liked, nvl(n.noliked, 0) as noliked\n" + 
+				"from onfs_famous_sayings f  full outer join onfs_likecount s\n" + 
+				"on(f.list_id = s.list_id)\n" + 
+				"full outer join onfs_nolikecount n\n" + 
+				"on (s.list_id = n.list_id)\n" + 
+				"order by 1";
 		conn = getConnect();
 		try {
 			pstmt = conn.prepareStatement(sql);
@@ -144,7 +147,6 @@ public class ODFSDAO {
 		return member;
 	}
 
-	// 좋아요 싫어요 취소는 어떻게?
 	public void userSelectLikeNoLike(int likeUnlikeSel, int listId, int userId) { // 유저의 좋아요 싫어요 insert
 		String sql = null;
 		if (likeUnlikeSel == 1) {
@@ -303,6 +305,37 @@ public class ODFSDAO {
 			e.printStackTrace();
 		}
 		return list;
+	}
+	
+	public void insertFamousSayForManager(String name, String fs) {
+		String sql = String.format("insert into onfs_famous_sayings values(ODFS_FS_LIST_ID_SEQ.nextval, '%s', '%s', (select max(usedate)+1 from onfs_famous_sayings))", name, fs);
+		conn = getConnect();
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public FamousSay getPreviousFS(int preNum) {
+		String sql = String.format("select * from onfs_famous_sayings where usedate = to_char(sysdate-%d, 'YYYY/MM/DD')", preNum);
+		FamousSay famousSay = new FamousSay();
+		conn = getConnect();
+		try {
+			pstmt = conn.prepareStatement(sql);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				famousSay.setListId(rs.getInt("list_id"));
+				famousSay.setName(rs.getString("name"));
+				famousSay.setContent(rs.getString("content"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (IndexOutOfBoundsException e1) {
+			e1.printStackTrace();
+		}
+		return famousSay;
 	}
 
 }// end of class

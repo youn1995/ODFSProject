@@ -68,6 +68,8 @@ public class OdfsController implements Initializable {
 	final ToggleGroup group = new ToggleGroup();
 	ToggleButton toBtnLikeIt;
 	ToggleButton toBtnNoLike;
+	
+	int userHyLinkPreCheckNum = 1;
 
 	public void setPrimaryStage(Stage stage) {
 		this.primaryStage = stage;
@@ -81,7 +83,9 @@ public class OdfsController implements Initializable {
 		FSToday();
 		labTodayFS.setText(famousSay.getContent());
 		labTodayFSWho.setText(famousSay.getName());
-
+		
+		
+		
 //		group.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
 //
 //			@Override
@@ -96,7 +100,7 @@ public class OdfsController implements Initializable {
 		AppService app = new AppServiceImpl();
 		member = app.login(txtUserId.getText(), txtPwd.getText());
 		if (member.getName() == null || member == null) {
-			messagePopup("아이디 또는 비밀번호를 틀렸습니다");
+			messagePopup("아이디 또는 비밀번호를 틀렸습니다", btnLogin);
 		} else if (member.getUserId() == 1000) {
 			Parent parent;
 			try {
@@ -128,6 +132,16 @@ public class OdfsController implements Initializable {
 					listOfUserLike(event);
 				});
 				Hyperlink hyLinkPre = (Hyperlink) parent.lookup("#hyLinkBefore");
+				hyLinkPre.setOnMouseClicked(new EventHandler<MouseEvent>() {
+					@Override
+					public void handle(MouseEvent event) {
+						userHyLinkPreCheckNum++;
+						FamousSay famPre = app.getPreviousFamousSay(userHyLinkPreCheckNum);
+						labWho.setText(famPre.getName());
+						labContent.setText(famPre.getContent());
+					}
+				});
+				
 				Hyperlink hyLinkNext = (Hyperlink) parent.lookup("hyLinkNext");
 				Hyperlink hyLinkLogOut = (Hyperlink) parent.lookup("hyLinkLogout");
 
@@ -162,7 +176,7 @@ public class OdfsController implements Initializable {
 
 	}
 
-	public void messagePopup(String message) {
+	public void messagePopup(String message, Parent test) {
 		HBox hbox = new HBox();
 		hbox.setStyle("-fx-background-color: black; -fx-background-radius: 20;");
 		hbox.setAlignment(Pos.CENTER);
@@ -179,7 +193,7 @@ public class OdfsController implements Initializable {
 		Popup popup = new Popup();
 		popup.getContent().add(hbox);
 		popup.setAutoHide(true);
-		popup.show(btnLogin.getScene().getWindow());
+		popup.show(test.getScene().getWindow());
 	}
 
 	public void FSToday() {
@@ -276,6 +290,9 @@ public class OdfsController implements Initializable {
 			e1.printStackTrace();
 		}
 	}
+	public void adminUserManage(Parent parent) {
+		
+	}
 
 	public void adminManager(Parent parent) {
 		Button btnDeleteFS = (Button) parent.lookup("#btnDeleteFS");
@@ -348,8 +365,15 @@ public class OdfsController implements Initializable {
 
 			@Override
 			public void handle(ActionEvent event) {
-				txtName.getText();
-				txtContent.getText();
+				String nameTxt = txtName.getText();
+				String contentTxt = txtContent.getText();
+				
+				if(nameTxt == null || nameTxt.equals("") || contentTxt == null || contentTxt.equals("")) {
+//					messagePopup("정확한 제목과 내용을 입력해주세요!");
+				} else {
+					app.insertFSForManager(nameTxt, contentTxt);
+					tableViewListFS.refresh();
+				}
 				
 			}
 		});
