@@ -54,12 +54,9 @@ public class ODFSDAO {
 
 	public ObservableList<FamousSayProperty> getFamousSayingList() { // 관리자용 명언리스트
 		ObservableList<FamousSayProperty> list = FXCollections.observableArrayList();
-		String sql = "select f.list_id, f.name, f.content, f.usedate, nvl(s.liked, 0) as liked, nvl(n.noliked, 0) as noliked\n" + 
-				"from onfs_famous_sayings f  full outer join onfs_likecount s\n" + 
-				"on(f.list_id = s.list_id)\n" + 
-				"full outer join onfs_nolikecount n\n" + 
-				"on (s.list_id = n.list_id)\n" + 
-				"order by 1";
+		String sql = "select f.list_id, f.name, f.content, f.usedate, nvl(s.liked, 0) as liked, nvl(n.noliked, 0) as noliked\n"
+				+ "from onfs_famous_sayings f  full outer join onfs_likecount s\n" + "on(f.list_id = s.list_id)\n"
+				+ "full outer join onfs_nolikecount n\n" + "on (s.list_id = n.list_id)\n" + "order by 1";
 		conn = getConnect();
 		try {
 			pstmt = conn.prepareStatement(sql);
@@ -306,9 +303,11 @@ public class ODFSDAO {
 		}
 		return list;
 	}
-	
+
 	public void insertFamousSayForManager(String name, String fs) {
-		String sql = String.format("insert into onfs_famous_sayings values(ODFS_FS_LIST_ID_SEQ.nextval, '%s', '%s', (select max(usedate)+1 from onfs_famous_sayings))", name, fs);
+		String sql = String.format(
+				"insert into onfs_famous_sayings values(ODFS_FS_LIST_ID_SEQ.nextval, '%s', '%s', (select max(usedate)+1 from onfs_famous_sayings))",
+				name, fs);
 		conn = getConnect();
 		try {
 			pstmt = conn.prepareStatement(sql);
@@ -317,9 +316,31 @@ public class ODFSDAO {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public FamousSay getPreviousFS(int preNum) {
-		String sql = String.format("select * from onfs_famous_sayings where usedate = to_char(sysdate-%d, 'YYYY/MM/DD')", preNum);
+		String sql = String
+				.format("select * from onfs_famous_sayings where usedate = to_char(sysdate+(%d), 'YYYY/MM/DD')", preNum);
+		FamousSay famousSay = new FamousSay();
+		conn = getConnect();
+		try {
+			pstmt = conn.prepareStatement(sql);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				famousSay.setListId(rs.getInt("list_id"));
+				famousSay.setName(rs.getString("name"));
+				famousSay.setContent(rs.getString("content"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (IndexOutOfBoundsException e1) {
+			e1.printStackTrace();
+		}
+		return famousSay;
+	}
+	
+	public FamousSay getNextFS(int nextNum) {
+		String sql = String
+				.format("select * from onfs_famous_sayings where usedate = to_char(sysdate+(%d), 'YYYY/MM/DD')", nextNum);
 		FamousSay famousSay = new FamousSay();
 		conn = getConnect();
 		try {

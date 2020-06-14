@@ -38,6 +38,7 @@ import javafx.stage.Modality;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.WindowEvent;
 import javafx.util.Callback;
 import saying.AppService;
 import saying.AppServiceImpl;
@@ -68,9 +69,17 @@ public class OdfsController implements Initializable {
 	final ToggleGroup group = new ToggleGroup();
 	ToggleButton toBtnLikeIt;
 	ToggleButton toBtnNoLike;
-	
-	int userHyLinkPreCheckNum = 1;
 
+	// for hyLinkPre
+	int userHyLinkPreNextCheckNum = 0;
+	boolean isPreFSExist = true;
+	FamousSay savePre = null;
+	FamousSay famPre = null;
+
+	// for hyLinkNext
+//	int userHyLinkNextCheckNum = 0;
+
+	
 	public void setPrimaryStage(Stage stage) {
 		this.primaryStage = stage;
 	}
@@ -81,11 +90,10 @@ public class OdfsController implements Initializable {
 		btnLogin.setOnAction((ActionEvent event) -> btnLoginAction(event));
 		btnSignUp.setOnAction((ActionEvent event) -> btnSignUpAction(event));
 		FSToday();
+	
 		labTodayFS.setText(famousSay.getContent());
 		labTodayFSWho.setText(famousSay.getName());
-		
-		
-		
+
 //		group.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
 //
 //			@Override
@@ -135,17 +143,56 @@ public class OdfsController implements Initializable {
 				hyLinkPre.setOnMouseClicked(new EventHandler<MouseEvent>() {
 					@Override
 					public void handle(MouseEvent event) {
-						userHyLinkPreCheckNum++;
-						FamousSay famPre = app.getPreviousFamousSay(userHyLinkPreCheckNum);
-						labWho.setText(famPre.getName());
-						labContent.setText(famPre.getContent());
+						famPre = app.getPreviousFamousSay(userHyLinkPreNextCheckNum-1);
+						if(famPre.getContent() == null) {
+							labWho.setText(savePre.getName());
+							labContent.setText(savePre.getContent());
+//						FamousSay famPre = app.getPreviousFamousSay(userHyLinkPreNextCheckNum);
+						} else {
+							labWho.setText(famPre.getName());
+							labContent.setText(famPre.getContent());
+							savePre = famPre;
+							userHyLinkPreNextCheckNum--;
+						}
+						
+						
+						
+//					
 					}
 				});
-				
-				Hyperlink hyLinkNext = (Hyperlink) parent.lookup("hyLinkNext");
-				Hyperlink hyLinkLogOut = (Hyperlink) parent.lookup("hyLinkLogout");
 
-//				hyLinkLogOut.setOnMouseClicked(event -> { 					
+				Hyperlink hyLinkNext = (Hyperlink) parent.lookup("#hyLinkNext");
+				hyLinkNext.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+					@Override
+					public void handle(MouseEvent event) {
+//						if(famousSay.getContent().equals(labContent.getText())) {
+//							FamousSay famNextFS = app.getNextFamousSay(1);
+//							labWho.setText(famNextFS.getName());
+//							labContent.setText(famNextFS.getContent());
+//						} else {
+//							userHyLinkPreCheckNum++;
+//							FamousSay famNextFS = app.getPreviousFamousSay(userHyLinkPreCheckNum);
+//							labWho.setText(famNextFS.getName());
+//							labContent.setText(famNextFS.getContent());
+//						}
+
+					}
+				});
+
+				Hyperlink hyLinkReturnToday = (Hyperlink) parent.lookup("#hyLinkReturnToday");
+				hyLinkReturnToday.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+					@Override
+					public void handle(MouseEvent event) {
+//						labWho.setText(famousSay.getContent());
+//						labContent.setText(famousSay.getName());
+					}
+				});
+
+				Hyperlink hyLinkLogOut = (Hyperlink) parent.lookup("#hyLinkLogout");
+
+//				hyLinkLogOut.setOnMouseClicked(event -> { 				
 //	
 //				});
 
@@ -284,14 +331,25 @@ public class OdfsController implements Initializable {
 
 			Hyperlink hyLinkGoBack = (Hyperlink) parent.lookup("#hyLinkGoBack");
 			hyLinkGoBack.setOnMouseClicked(event -> {
+				
 				addStage.close();
 			});
+			
+			addStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+
+				@Override
+				public void handle(WindowEvent event) {
+
+				}
+			});
+			
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
 	}
+
 	public void adminUserManage(Parent parent) {
-		
+
 	}
 
 	public void adminManager(Parent parent) {
@@ -367,22 +425,22 @@ public class OdfsController implements Initializable {
 			public void handle(ActionEvent event) {
 				String nameTxt = txtName.getText();
 				String contentTxt = txtContent.getText();
-				
-				if(nameTxt == null || nameTxt.equals("") || contentTxt == null || contentTxt.equals("")) {
+
+				if (nameTxt == null || nameTxt.equals("") || contentTxt == null || contentTxt.equals("")) {
 //					messagePopup("정확한 제목과 내용을 입력해주세요!");
 				} else {
 					app.insertFSForManager(nameTxt, contentTxt);
 					tableViewListFS.refresh();
 				}
-				
+
 			}
 		});
-		
+
 		btnUserManage.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
-				
+
 			}
 		});
 

@@ -18,26 +18,25 @@ public class AppServiceImpl implements AppService {
 
 	@Override
 	public boolean findLikeIt(int likeUnlikeSel, int listId, int userId) {
-		ODFSDAO dao  = new ODFSDAO();
+		ODFSDAO dao = new ODFSDAO();
 		return dao.findUserLikeIt(likeUnlikeSel, listId, userId);
 
 	}
-
 
 	@Override
 	public FamousSay getDailyFS() {
 		ODFSDAO dao = new ODFSDAO();
 		FamousSay fs = dao.findFS();
-		
+
 		return fs;
 	}
 
 	@Override
 	public List<Integer> getUserLikeList(int selectNum, int userId) {
 		ODFSDAO dao = new ODFSDAO();
-		if(selectNum == 1) {
+		if (selectNum == 1) {
 			return dao.getUserLikeItList(userId);
-		} else if(selectNum == -1) {
+		} else if (selectNum == -1) {
 			return dao.getUserNoLikeItList(userId);
 		}
 		return null;
@@ -53,17 +52,17 @@ public class AppServiceImpl implements AppService {
 	public ObservableList<FamousSayProperty> userLikeList(int userId) {
 
 		ODFSDAO dao = new ODFSDAO();
-		
+
 		ObservableList<FamousSayProperty> list = dao.getFamousSayPropertyList(userId);
 		return list;
-		 
+
 	}
 
 	@Override
 	public ObservableList<FamousSayProperty> managerFSList() {
 		ODFSDAO dao = new ODFSDAO();
 		ObservableList<FamousSayProperty> list = dao.getFamousSayingList();
-		
+
 		return list;
 	}
 
@@ -82,9 +81,15 @@ public class AppServiceImpl implements AppService {
 	@Override
 	public FamousSay getPreviousFamousSay(int preNum) {
 		ODFSDAO dao = new ODFSDAO();
-		return dao.getPreviousFS(preNum);
+		FamousSay returnPreFS = dao.getPreviousFS(preNum);
+		return returnPreFS;
 	}
-	
-	
+
+	@Override
+	public FamousSay getNextFamousSay(int nextNum) {
+		ODFSDAO dao = new ODFSDAO();
+		FamousSay returnNextFS = dao.getNextFS(nextNum);
+		return returnNextFS;
+	}
 
 }

@@ -5,7 +5,6 @@ import java.util.List;
 import javafx.collections.ObservableList;
 
 public interface AppService {
-// 버튼과 연결작업하기 위한 인터페이스
 	public Member login(String userId, String userPwd);
 	
 	public boolean findLikeIt(int likeUnlikeSel, int listId, int userId);
@@ -14,6 +13,7 @@ public interface AppService {
 	
 	public FamousSay getDailyFS();
 	public FamousSay getPreviousFamousSay(int preNum);
+	public FamousSay getNextFamousSay(int nextNum);
 	
 	public List<Integer> getUserLikeList(int selectNum, int userId);
 	
@@ -24,5 +24,7 @@ public interface AppService {
 	public void deleteFamousSayingForManager(int listId);
 	
 	public void insertFSForManager(String name, String fs);
+	
+	
 	
 }
